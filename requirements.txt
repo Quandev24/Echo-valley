@@ -1,1 +1,5 @@
-Tới-Đạt
+pandas
+numpy
+matplotlib
+seaborn
+jupyter
