@@ -1,2 +1,11 @@
 # Data directories
 data/Raw/
+data/processed/
+data/sample/
+
+# Environment configurations
+.env
+notebooks/.env
+
+# Local notebook outputs/data
+notebooks/data/
