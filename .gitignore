@@ -1,2 +1,6 @@
 # Data directories
 data/Raw/
+
+# Large archives and local zips
+Echo Valley.zip
+*.zip
