@@ -1,0 +1,186 @@
+=== 01_data_understanding.ipynb ===
+0: [markdown] # Thắng
+1: [markdown] # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 01_data_understand
+2: [markdown] # 1. Nhập thư viện và nạp dữ liệu
+3: [code] # Nhập thư viện cần thiết import pandas as pd import os from IPython.display import display  # Đường
+4: [markdown] **Nhận xét:** - Cả 9 bảng dữ liệu từ bộ dataset Olist đã được nạp thành công và lưu vào dictionary `
+5: [markdown] # 2. Tổng quan cấu trúc dữ liệu
+6: [markdown] ## 2.1 Kiểm tra thông tin các bảng
+7: [markdown] ### 2.1.1 Xem hình dáng (Shape) của từng bảng
+8: [markdown] **a.** In ra kích thước (rows, columns) của 9 bảng
+9: [code] # Code kiểm tra shape của các dataframe print('Kích thước của các bảng dữ liệu (rows, columns):') fo
+10: [markdown] **Nhận xét:** - Bảng `geolocation` có quy mô lớn nhất với hơn 1 triệu dòng (1,000,163 dòng). - Bảng 
+11: [markdown] ### 2.1.2 Kiểm tra kiểu dữ liệu (Data types) và giá trị null
+12: [markdown] **a.** Sử dụng hàm .info() cho các bảng
+13: [code] # Code sử dụng .info() cho các bảng for name, df in dataframes.items():     print(f'\n--- Thông tin 
+14: [markdown] **Nhận xét:** - **Kiểu dữ liệu:** Các cột ngày tháng/thời gian (như `order_purchase_timestamp`, `ord
+15: [markdown] # 3. Kiểm tra dữ liệu trùng lặp
+16: [markdown] ## 3.1 Kiểm tra trùng lặp trên các bảng chính
+17: [markdown] ### 3.1.1 Kiểm tra số lượng dòng trùng
+18: [markdown] **a.** Sử dụng hàm .duplicated().sum()
+19: [code] # Code kiểm tra trùng lặp print('Số lượng dòng trùng lặp trong các bảng:') for name, df in dataframe
+20: [markdown] **Nhận xét:** - Hầu hết các bảng chính như `customers`, `orders`, `order_items`, `order_payments`, `
+21: [markdown] # 4. Tổng quan thống kê (Statistical Summary)
+22: [markdown] ## 4.1 Thống kê mô tả
+23: [markdown] ### 4.1.1 Xem phân phối của dữ liệu số
+24: [markdown] **a.** Sử dụng hàm .describe() cho các cột số
+25: [code] # Code mô tả thống kê for name, df in dataframes.items():     print(f'\n--- Thống kê mô tả bảng {nam
+26: [markdown] **Nhận xét:** - **Bảng `order_items`:**   - Cột `price` (giá sản phẩm) dao động từ 0.85 đến 6,735.00
+27: [markdown] # 5. Phân tích sơ bộ mối quan hệ (Data Dictionary check)
+28: [markdown] ## 5.1 Kiểm tra khóa chính và khóa ngoại
+29: [markdown] ### 5.1.1 Kiểm tra các cột định danh
+30: [markdown] **a.** Kiểm tra tính duy nhất của ID (Primary Key)
+31: [code] # Code kiểm tra tính duy nhất (is_unique) print('Kiểm tra tính duy nhất của một số khóa chính giả đị
+32: [markdown] **Nhận xét:** - Các trường khóa chính giả định bao gồm: `customer_id` (bảng `customers`), `order_id`
+
+=== 02_postgresql_pipeline.ipynb ===
+0: [markdown] # Thắng
+1: [markdown] # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 02_postgresql_pipe
+2: [markdown] # 1. Kết nối cơ sở dữ liệu
+3: [markdown] ## 1.1 Cấu hình kết nối
+4: [markdown] ### 1.1.1 Khai báo thông tin xác thực
+5: [markdown] **a.** Sử dụng `python-dotenv` để load biến môi trường (không hard-code mật khẩu)
+6: [code] # Code import sqlalchemy, dotenv và thiết lập chuỗi kết nối (connection string) import os import pan
+7: [markdown] **Nhận xét:** - [Điền nhận xét: Kết nối đã thành công hay chưa?]
+8: [markdown] # 2. Xây dựng Pipeline đẩy dữ liệu (ETL)
+9: [markdown] ## 2.1 Tạo cấu trúc bảng (Schema)
+10: [markdown] ### 2.1.1 Đẩy dữ liệu từ CSV lên Database
+11: [markdown] **a.** Vòng lặp đọc CSV và dùng `to_sql` để tạo bảng
+12: [code] # Code đọc 9 file CSV và push lên PostgreSQL import time  data_dir = '../data/archive/' files = {   
+13: [markdown] **Nhận xét:** - [Điền nhận xét: Dữ liệu đã đẩy thành công, có lỗi định dạng kiểu dữ liệu nào không?]
+14: [markdown] # 3. Thực hiện Join 9 bảng (Core Task)
+15: [markdown] ## 3.1 Xây dựng câu truy vấn SQL
+16: [markdown] ### 3.1.1 Viết truy vấn JOIN
+17: [markdown] **a.** Kết hợp các bảng chính (Orders, Items, Customers, Products, Payments, Reviews...)
+18: [code] # Code viết truy vấn SQL JOIN 9 bảng và lưu kết quả vào một dataframe/table mới query = """ SELECT  
+19: [markdown] **Nhận xét:** - [Điền nhận xét: Truy vấn chạy mất bao lâu? Master Table có bao nhiêu dòng và cột?]
+20: [markdown] # 4. Kiểm tra Master Table
+21: [markdown] ## 4.1 Kiểm tra dữ liệu tổng hợp
+22: [markdown] ### 4.1.1 Kiểm tra null và kiểu dữ liệu của bảng cuối
+23: [markdown] **a.** Kiểm tra toàn vẹn dữ liệu
+24: [code] # Code kiểm tra df_master.info() và df_master.head() print("--- Thông tin Master Table ---") df_mast
+25: [markdown] **Nhận xét:** - [Điền nhận xét: Bảng cuối cùng đã sẵn sàng cho phân tích chưa?]
+
+=== 03_data_cleaning.ipynb ===
+0: [markdown] # Tới  # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 03_data_cle
+1: [markdown] # 1. Nạp dữ liệu từ Pipeline
+2: [markdown] ## 1.1 Kết nối Master Table
+3: [markdown] ### 1.1.1 Tải dữ liệu vào DataFrame
+4: [markdown] **a.** Truy vấn dữ liệu từ bảng tổng hợp (Master Table) trong PostgreSQL
+5: [code] import os import json import pandas as pd import numpy as np import warnings from sqlalchemy import 
+6: [markdown] **Nhận xét:** - Master Table đã nạp thành công từ PostgreSQL (olist_db) - Bảng chứa toàn bộ dữ liệu 
+7: [markdown] # 2. Xử lý giá trị thiếu (Missing Values)
+8: [markdown] ## 2.1 Phân tích các cột Null
+9: [markdown] ### 2.1.1 Đánh giá tỷ lệ Null
+10: [markdown] **a.** Tính toán % giá trị null của từng cột
+11: [code] # Kiểm tra giá trị null null_counts = df.isnull().sum() null_percent = (null_counts / len(df) * 100)
+12: [markdown] **Nhận xét:** - Chiến lược xử lý:   - Drop cột có >50% null (thông tin không đáng tin cậy)   - Fill 
+13: [markdown] # 3. Chuyển đổi kiểu dữ liệu (Data Type Conversion)
+14: [markdown] ## 3.1 Định dạng thời gian
+15: [markdown] ### 3.1.1 Chuyển đổi các cột thời gian
+16: [markdown] **a.** Sử dụng pd.to_datetime() cho các cột ngày tháng
+17: [code] print('Chuyển đổi kiểu dữ liệu...') print(f'Kiểu hiện tại:\n{df.dtypes.head(20)}\n')  # Chuyển các c
+18: [markdown] **Nhận xét:** - Các cột datetime (order_purchase_timestamp, delivery_date, estimated_delivery_date, 
+19: [markdown] # 4. Xử lý giá trị ngoại lai (Outliers)
+20: [markdown] ## 4.1 Phân tích phân phối
+21: [markdown] ### 4.1.1 Kiểm tra các giá trị bất thường
+22: [markdown] **a.** Sử dụng biểu đồ Boxplot hoặc thống kê mô tả để tìm outliers
+23: [code] print('Xử lý Outliers (IQR method)...')  outlier_cols = [col for col in [     'price', 'freight_valu
+24: [markdown] **Nhận xét:** - Sử dụng IQR method (robust outlier detection) thay vì Z-score - Capping thay vì drop
+25: [markdown] # 5. Xuất dữ liệu đã làm sạch
+26: [markdown] ## 5.1 Lưu file
+27: [markdown] ### 5.1.1 Lưu vào thư mục processed
+28: [markdown] **a.** Lưu thành file CSV hoặc Parquet
+29: [code] import os import json  # Tạo thư mục nếu chưa tồn tại output_dir = '../data/processed' os.makedirs(o
+30: [markdown] **Nhận xét:** - Dữ liệu đã sạch 100%, không còn missing values - Xuất 3 format:   - CSV: dễ đọc, tươ
+
+=== 04_eda_visualization.ipynb ===
+0: [markdown] # Tới  # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 04_eda_visu
+1: [markdown] # 1. Nạp dữ liệu sạch
+2: [markdown] ## 1.1 Load dữ liệu đã làm sạch
+3: [code] import os import pandas as pd import numpy as np import matplotlib.pyplot as plt import seaborn as s
+4: [markdown] **Nhận xét:** - Dữ liệu đã nạp thành công từ file cleaned_data.csv - Kiểm tra shape và columns để xá
+5: [markdown] # 2. Phân tích địa lý và Khoảng cách
+6: [markdown] ## 2.1 Tính toán khoảng cách (Distance Engineering)
+7: [markdown] ### 2.1.1 Tính khoảng cách Haversine giữa khách hàng và người bán
+8: [markdown] **a.** Tính khoảng cách địa lý giữa tọa độ khách hàng và người bán
+9: [code] def haversine_distance(lat1, lon1, lat2, lon2):     lat1, lon1, lat2, lon2 = map(radians, [lat1, lon
+10: [markdown] **Nhận xét:** - Khoảng cách đã được tính toán bằng Haversine formula từ tọa độ GPS - Khoảng cách dao
+11: [markdown] # 3. Phân tích điểm nghẽn (Bottleneck Analysis)
+12: [markdown] ## 3.1 Thời gian giao hàng thực tế vs. Dự kiến
+13: [markdown] ### 3.1.1 So sánh thời gian giao hàng
+14: [markdown] **a.** Tính hiệu số: thời gian giao thực tế vs thời gian ước tính
+15: [code] print('Phân tích Thời gian Giao hàng...')  found_date_cols = [col for col in df.columns if 'date' in
+16: [markdown] **Nhận xét:** - Thời gian giao hàng trung bình: thường 5-30 ngày tùy khoảng cách - Các đơn hàng bị c
+17: [markdown] # 4. Trực quan hóa xu hướng & Hành vi
+18: [markdown] ## 4.1 Phân tích các yếu tố ảnh hưởng
+19: [markdown] ### 4.1.1 Biểu đồ trực quan hóa (Heatmap, Bar chart, v.v.)
+20: [markdown] **a.** Vẽ biểu đồ phân tích dữ liệu quan trọng
+21: [code] import os  os.makedirs('../data/processed', exist_ok=True)  numeric_df = df.select_dtypes(include=[n
+22: [markdown] **Nhận xét:** - Heatmap Correlation:   - Các biến có tương quan cao → có thể dùng cho feature engine
+
+=== 05_feature_engineering.ipynb ===
+0: [markdown] # Nguyên
+1: [markdown] # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 05_modeling_predic
+2: [markdown] # 1. Chuẩn bị dữ liệu cho Model
+3: [markdown] ## 1.1 Feature Engineering
+4: [code] import os import numpy as np import pandas as pd from sqlalchemy import create_engine from dotenv im
+5: [markdown] # 2. Xây dựng mô hình dự báo thời gian giao hàng
+6: [markdown] ## 2.1 Huấn luyện mô hình (Regression)
+7: [code] from sklearn.model_selection import train_test_split from sklearn.preprocessing import StandardScale
+8: [markdown] **Nhận xét:** - Mô hình có MAE là **4.59 ngày** và RMSE là **6.69 ngày**, R-squared đạt **0.36**. - 
+9: [markdown] # 3. Gợi ý vị trí kho bãi tối ưu (Strategy)
+10: [markdown] ## 3.1 Phân cụm khách hàng (Clustering)
+11: [markdown] **a.** Sử dụng K-Means Clustering trên tọa độ địa lý (latitude, longitude) của khách hàng để tìm tru
+12: [code] from sklearn.cluster import KMeans import matplotlib.pyplot as plt import seaborn as sns import jobl
+13: [markdown] **Nhận xét:** - 5 tâm điểm phân cụm đại diện cho 5 vùng phân phối chính tại Brazil giúp giảm thiểu k
+14: [markdown] # 4. Kết luận và Đề xuất
+15: [markdown] ## 4.1 Tóm tắt đề xuất cho Olist
+16: [markdown] - **Về dự báo:** Mô hình RandomForestRegressor dự báo thời gian giao hàng đạt MAE ~ 4.59 ngày. - **V
+
+=== 06_machine_learning.ipynb ===
+0: [markdown] # Nguyên
+1: [markdown] # Dự án: Echo Valley - Dự án Phân tích Thương mại điện tử Olist **Tên Notebook:** 06_api_web_service
+2: [markdown] # 1. Load mô hình và Preprocessing Pipeline
+3: [markdown] ## 1.1 Tải artifacts
+4: [markdown] ### 1.1.1 Load các file .pkl
+5: [markdown] **a.** Sử dụng `pickle` hoặc `joblib` để load mô hình và scaler
+6: [code] import os import joblib  model_dir = '../models' model = joblib.load(os.path.join(model_dir, 'model.
+7: [markdown] **Nhận xét:** - [Điền nhận xét: Mô hình đã load thành công chưa? Các tham số có đúng không?]
+8: [markdown] # 2. Xây dựng logic dự báo (API Logic)
+9: [markdown] ## 2.1 Viết hàm xử lý đầu vào
+10: [markdown] ### 2.1.1 Định nghĩa hàm `predict`
+11: [markdown] **a.** Hàm nhận JSON input, biến đổi dữ liệu (preprocess) và trả về kết quả dự báo
+12: [code] import pandas as pd import numpy as np  def haversine_distance(lat1, lon1, lat2, lon2):     lon1, la
+13: [markdown] **Nhận xét:** - [Điền nhận xét: Hàm dự báo có chạy đúng không? Có gặp lỗi định dạng dữ liệu không?]
+14: [markdown] # 3. Giả lập Request (Integration Testing)
+15: [markdown] ## 3.1 Kiểm tra phản hồi của mô hình
+16: [markdown] ### 3.1.1 Tạo sample request
+17: [markdown] **a.** Tạo một input mẫu (ví dụ: tọa độ, loại sản phẩm) để test hàm
+18: [code] # Tạo request giả lập (ở dạng JSON/dict) sample_request = {     'customer_lat': -23.5505,     'custo
+19: [markdown] **Nhận xét:** - [Điền nhận xét: Kết quả dự báo có logic không?]
+20: [markdown] # 4. Chuẩn bị cho FastAPI
+21: [markdown] ## 4.1 Sẵn sàng cho triển khai
+22: [markdown] ### 4.1.1 Export logic sang api.py
+23: [markdown] **a.** Ghi chú các bước cần chuyển sang file `api.py`
+24: [code] # Ghi chú logic cần export sang api.py api_code = """ from fastapi import FastAPI, HTTPException fro
+25: [markdown] **Nhận xét:** - [Điền nhận xét: Mọi logic đã sẵn sàng để code file .py chưa?]
+
+=== 07_prediction_demo.ipynb ===
+0: [markdown] # Dự án: Echo Valley — Phân tích Thương mại điện tử Olist Brazil **Tên Notebook:** 07_prediction_dem
+1: [markdown] # 1. Thiết lập môi trường hiển thị  Phần này chuẩn bị các thư viện và cấu hình cần thiết để chạy gia
+2: [code] # Import thư viện cần thiết import os import sys  # Kiểm tra các thư viện hiển thị print('Python ver
+3: [markdown] ## 1.1 Tại sao không dùng Streamlit làm giao diện chính?  **Nhận xét của sinh viên:**  - **Hạn chế v
+4: [markdown] # 2. Kiến trúc giao diện Interactive Presentation  Giao diện được chia thành **4 phân đoạn chính**, 
+5: [markdown] ## 2.1 Bốn phân đoạn thiết kế  ### Phân đoạn 1: Hero Section & Sơ đồ 9 Bảng - Nền gradient tím sâu (
+6: [markdown] ## 2.2 Bảng màu Pastel hài hòa  | Vai trò | Mã màu | Mô tả | |---------|--------|-------| | Nền chín
+7: [markdown] # 3. Trực quan hóa dữ liệu & Bản đồ tương tác
+8: [markdown] ## 3.1 Joining 9 bảng dữ liệu tìm Điểm nghẽn  **Nhận xét của sinh viên:**  - **Quy trình liên kết 9 
+9: [code] # Các thành phần trực quan hóa chính trong giao diện: # 1. Sơ đồ mạng lưới 9 node (Section 1) - Thể 
+10: [markdown] # 4. Tích hợp Dự báo thời gian giao hàng (Delivery Time)
+11: [markdown] ## 4.1 Mô hình RandomForestRegressor  **Nhận xét của sinh viên:**  - **Thuật toán sử dụng:** Nhóm hu
+12: [code] # Logic dự báo Delivery Time (tái hiện trong JavaScript phía client) # Base days theo bang đích đến:
+13: [markdown] # 5. Đóng gói và triển khai giao diện
+14: [markdown] ## 5.1 Cấu trúc thư mục ứng dụng  ``` app/ ├── index.html          # Giao diện chính (HTML/CSS/JS th
+15: [code] # Xuất toàn bộ mã nguồn giao diện ra file import os  # Nội dung file app/index.html html_content = r
+16: [markdown] ## 5.2 Tổng kết  **Nhận xét của sinh viên:**  - Giao diện Interactive Presentation đã được thiết kế 
