@@ -1,3 +1,4 @@
+-- Quân
 -- Tạo Index cho các cột thường xuyên dùng để JOIN giữa các bảng
 CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
 CREATE INDEX IF NOT EXISTS idx_items_order_id ON order_items(order_id);

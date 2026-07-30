@@ -1,3 +1,5 @@
+-- Thắng
+
 -- Bảng 1: customers
 CREATE TABLE IF NOT EXISTS customers (
     customer_id VARCHAR(50) PRIMARY KEY,

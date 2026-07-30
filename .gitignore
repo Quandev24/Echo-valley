@@ -4,3 +4,14 @@ data/Raw/
 # Large archives and local zips
 Echo Valley.zip
 *.zip
+*.rar
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Office temporary files
+~$*
+~*
+*.tmp

@@ -1,3 +1,4 @@
+-- Đạt
 -- Thống kê 1: Thời gian giao hàng trung bình theo bang (của khách hàng)
 CREATE TABLE IF NOT EXISTS avg_delivery_time_by_state AS
 SELECT 

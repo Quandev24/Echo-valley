@@ -1,3 +1,4 @@
+-- Nguyên
 -- Tạo View tổng hợp dữ liệu từ cả 9 bảng phục vụ cho phân tích
 CREATE OR REPLACE VIEW master_data_view AS
 SELECT 
